@@ -41,6 +41,14 @@ module.exports = function(app) {
 
   app.put('/payments/:id', function(req, res) {
 
+    req.checkParams('id', 'invalid id param').isInt();
+
+    let errors = req.validationErrors();
+    if (errors) {
+      res.status(400).send(errors);
+      return;
+    }
+
     let payment = {};
     let id = req.params.id;
 
@@ -63,6 +71,14 @@ module.exports = function(app) {
   });
 
   app.delete('/payments/:id', function(req, res) {
+
+    req.checkParams('id', 'invalid id param').isInt();
+
+    let errors = req.validationErrors();
+    if (errors) {
+      res.status(400).send(errors);
+      return;
+    }
 
     let payment = {};
     let id = req.params.id;
