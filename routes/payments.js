@@ -9,6 +9,7 @@ module.exports = function(app) {
 
     req.assert('payment_way', 'payment way is required').notEmpty();
     req.assert('amount', 'amount is required and must be a float').notEmpty().isFloat();
+    req.assert('currency', 'currency is required and must be a float').notEmpty();
 
     var errors = req.validationErrors();
 
@@ -21,7 +22,7 @@ module.exports = function(app) {
     console.log('processing new payment request');
 
     payment.status = 'CREATED';
-    payment.createAt = new Date();
+    payment.createdAt = new Date();
 
     var connection = app.database.connectionFactory();
     var paymentDAO = new app.database.PaymentDAO(connection);
@@ -32,7 +33,8 @@ module.exports = function(app) {
       }
 
       console.log('payment created');
-      res.json(payment);
+      res.location('/payments/' + result.insertId);
+      res.status(201).json(payment);
     });
 
   });
