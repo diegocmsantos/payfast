@@ -39,4 +39,50 @@ module.exports = function(app) {
 
   });
 
+  app.put('/payments/:id', function(req, res) {
+
+    let payment = {};
+    let id = req.params.id;
+
+    payment.id = id;
+    payment.status = "CONFIRMED";
+
+    var connection = app.database.connectionFactory();
+    var paymentDAO = new app.database.PaymentDAO(connection);
+
+    paymentDAO.update(payment, function(err) {
+      if (err) {
+        res.status(500).send(err);
+        return;
+      }
+
+      console.log('payment updated');
+      res.send(payment);
+    });
+
+  });
+
+  app.delete('/payments/:id', function(req, res) {
+
+    let payment = {};
+    let id = req.params.id;
+
+    payment.id = id;
+    payment.status = "CANCELLED";
+
+    let connection = app.database.connectionFactory();
+    let paymentDAO = new app.database.PaymentDAO(connection);
+
+    paymentDAO.update(payment, function(err) {
+      if (err) {
+        res.status(500).send(err);
+        return;
+      }
+
+      console.log('payment cancelled');
+      res.status(204).send(payment);
+    });
+
+  });
+
 }
