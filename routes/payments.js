@@ -30,11 +30,30 @@ module.exports = function(app) {
     paymentDAO.save(payment, function(err, result) {
       if (err) {
         res.status(500).send(err);
+        return;
       }
 
+      payment.id = result.insertId;
       console.log('payment created');
-      res.location('/payments/' + result.insertId);
-      res.status(201).json(payment);
+      res.location('/payments/' + payment.id);
+
+      let response = {
+        payment_data: payment,
+        links: [
+          {
+            href: "http://localhost:3000/payments/" + payment.id,
+            rel: "confirm",
+            method: "PUT"
+          },
+          {
+            href: "http://localhost:3000/payments/" + payment.id,
+            rel: "cancel",
+            method: "DELETE"
+          }
+        ]
+      };
+
+      res.status(201).json(response);
     });
 
   });
