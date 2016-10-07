@@ -1,6 +1,15 @@
 {
-  "payment_way": "payfast",
-  "amount": 90.49,
-  "currency": "USD",
-  "description": "creating a payment"
+  "payment": {
+    "payment_way": "card",
+    "amount": 90.49,
+    "currency": "USD",
+    "description": "creating a payment"
+  },
+  "card": {
+    "number": 1234123412341234,
+    "flag": "visa",
+    "expire_year": 2016,
+    "expire_month": 12,
+    "cvv": 123
+  }
 }

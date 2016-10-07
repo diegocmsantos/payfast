@@ -15,6 +15,7 @@ module.exports = function() {
   consign()
     .include('routes')
     .then('database')
+    .then('services')
     .into(app);
 
   return app;
